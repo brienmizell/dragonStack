@@ -1,5 +1,8 @@
 class Dragon {
 	constructor(birthdate, nickname) {
-        this.
-    }
+		this.birthdate = birthdate;
+		this.nickname = nickname;
+	}
 }
+
+module.exports = Dragon;
