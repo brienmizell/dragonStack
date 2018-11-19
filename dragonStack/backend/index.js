@@ -11,7 +11,7 @@ console.log('gooby', gooby);
 setTimeout(() => {
 	const mimar = generation.newDragon();
 	console.log('mimar', mimar);
-}, 15000);
+}, 5000);
 
 // const Dragon = require('./dragon');
 
