@@ -1,12 +1,16 @@
+const express = require('express');
+const app = express();
+
 const GenerationEngine = require('./engine');
 
 const engine = new GenerationEngine();
+const port = 3000;
 
 engine.start();
 
-setTimeout(() => {
-	engine.stop();
-}, 20000);
+// setTimeout(() => {
+// 	engine.stop();
+// }, 20000);
 
 //////////////////////////////////////////
 
@@ -48,3 +52,8 @@ setTimeout(() => {
 // console.log('fooey', fooey);
 // console.log('baloo', baloo);
 // console.log('mimar', mimar);
+app.get('/dragon/new', (req, res) => {
+	res.json({ dragon: engine.generation.newDragon() });
+});
+
+app.listen(port, () => console.log(`listening on port ${port}`));
