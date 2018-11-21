@@ -2,11 +2,19 @@ import React, { Component } from 'react';
 
 const DEFAULT_GENERATION = { generationId: '', expiration: '' };
 
+const MINIMUM_DELAY = 3000;
+
 class Generation extends Component {
 	state = { generation: DEFAULT_GENERATION };
 
+	timer = null;
+
 	componentDidMount() {
-		this.fetchGeneration();
+		this.fetchNextGeneration();
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.timer);
 	}
 
 	fetchGeneration = () => {
@@ -20,8 +28,22 @@ class Generation extends Component {
 			.catch((error) => console.error('error', error));
 	};
 
+	fetchNextGeneration = () => {
+		this.fetchGeneration();
+
+		let delay = new Date(this.state.generation.expiration).getTime() - new Date().getTime();
+
+		if (delay < MINIMUM_DELAY) {
+			delay = MINIMUM_DELAY;
+		}
+
+		this.timer = setTimeout(() => {
+			this.fetchNextGeneration();
+		}, delay);
+	};
+
 	render() {
-		const generation = this.state;
+		const { generation } = this.state;
 		return (
 			<div>
 				<h3>Generation {generation.generationId}. Expires on:</h3>
