@@ -19,4 +19,4 @@ class DragonTraitTable {
 	}
 }
 
-module.exports - DragonTraitTable;
+module.exports = DragonTraitTable;
