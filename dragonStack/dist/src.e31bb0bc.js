@@ -24049,6 +24049,7 @@ var DEFAULT_GENERATION = {
   generationId: '',
   expiration: ''
 };
+var MINIMUM_DELAY = 3000;
 
 var Generation =
 /*#__PURE__*/
@@ -24070,7 +24071,7 @@ function (_Component) {
 
     return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Generation)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
       generation: DEFAULT_GENERATION
-    }, _this.fetchGeneration = function () {
+    }, _this.timer = null, _this.fetchGeneration = function () {
       fetch('http://localhost:3000/generation').then(function (response) {
         return response.json();
       }).then(function (json) {
@@ -24082,18 +24083,35 @@ function (_Component) {
       }).catch(function (error) {
         return console.error('error', error);
       });
+    }, _this.fetchNextGeneration = function () {
+      _this.fetchGeneration();
+
+      var delay = new Date(_this.state.generation.expiration).getTime() - new Date().getTime();
+
+      if (delay < MINIMUM_DELAY) {
+        delay = MINIMUM_DELAY;
+      }
+
+      _this.timer = setTimeout(function () {
+        _this.fetchNextGeneration();
+      }, delay);
     }, _temp));
   }
 
   _createClass(Generation, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.fetchGeneration();
+      this.fetchNextGeneration();
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      clearTimeout(this.timer);
     }
   }, {
     key: "render",
     value: function render() {
-      var generation = this.state;
+      var generation = this.state.generation;
       return _react.default.createElement("div", null, _react.default.createElement("h3", null, "Generation ", generation.generationId, ". Expires on:"), _react.default.createElement("h4", null, new Date(generation.expiration).toString()));
     }
   }]);
@@ -24142,7 +24160,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53815" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59999" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
