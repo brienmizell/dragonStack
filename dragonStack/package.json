@@ -1,0 +1,15 @@
+{
+	"name": "dragonStack",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "nf start",
+		"backend": "nodemon backend/bin/server",
+		"frontend": "parcel frontend/src/index.html",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}
