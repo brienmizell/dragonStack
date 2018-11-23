@@ -24153,8 +24153,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 var DragonAvatar =
 /*#__PURE__*/
-function (_Componet) {
-  _inherits(DragonAvatar, _Componet);
+function (_Component) {
+  _inherits(DragonAvatar, _Component);
 
   function DragonAvatar() {
     _classCallCheck(this, DragonAvatar);
@@ -24169,14 +24169,14 @@ function (_Componet) {
           generationId = _this$props$dragon.generationId,
           dragonId = _this$props$dragon.dragonId,
           traits = _this$props$dragon.traits;
-      return _react.default.createElement("div", null, _react.default.createElement("span", null, "G", generationId, "."), _react.default.createElement("span", null, "I", dragonId, "."), traits.map(function (trait) {
+      return _react.default.createElement("div", null, _react.default.createElement("span", null, "G", generationId, "."), _react.default.createElement("span", null, "I", dragonId, ". "), traits.map(function (trait) {
         return trait.traitValue;
       }).join(', '));
     }
   }]);
 
   return DragonAvatar;
-}(_react.Componet);
+}(_react.Component);
 
 var _default = DragonAvatar;
 exports.default = _default;
@@ -24256,8 +24256,8 @@ function (_Component) {
   }
 
   _createClass(Dragon, [{
-    key: "componetDidMount",
-    value: function componetDidMount() {
+    key: "componentDidMount",
+    value: function componentDidMount() {
       this.fetchDragon();
     }
   }, {
