@@ -24045,24 +24045,73 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+var DEFAULT_GENERATION = {
+  generationId: '',
+  expiration: ''
+};
+var MINIMUM_DELAY = 3000;
+
 var Generation =
 /*#__PURE__*/
 function (_Component) {
   _inherits(Generation, _Component);
 
   function Generation() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    var _temp;
+
     _classCallCheck(this, Generation);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Generation).apply(this, arguments));
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Generation)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
+      generation: DEFAULT_GENERATION
+    }, _this.timer = null, _this.fetchGeneration = function () {
+      fetch('http://localhost:3000/generation').then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        console.log('json', json);
+
+        _this.setState({
+          generation: json.generation
+        });
+      }).catch(function (error) {
+        return console.error('error', error);
+      });
+    }, _this.fetchNextGeneration = function () {
+      _this.fetchGeneration();
+
+      var delay = new Date(_this.state.generation.expiration).getTime() - new Date().getTime();
+
+      if (delay < MINIMUM_DELAY) {
+        delay = MINIMUM_DELAY;
+      }
+
+      _this.timer = setTimeout(function () {
+        _this.fetchNextGeneration();
+      }, delay);
+    }, _temp));
   }
 
   _createClass(Generation, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.fetchNextGeneration();
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      clearTimeout(this.timer);
+    }
+  }, {
     key: "render",
     value: function render() {
-      var generation = {
-        generationId: 999,
-        expiration: '2020-05-01'
-      };
+      var generation = this.state.generation;
       return _react.default.createElement("div", null, _react.default.createElement("h3", null, "Generation ", generation.generationId, ". Expires on:"), _react.default.createElement("h4", null, new Date(generation.expiration).toString()));
     }
   }]);
@@ -24072,7 +24121,160 @@ function (_Component) {
 
 var _default = Generation;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"index.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"componets/DragonAvatar.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var DragonAvatar =
+/*#__PURE__*/
+function (_Componet) {
+  _inherits(DragonAvatar, _Componet);
+
+  function DragonAvatar() {
+    _classCallCheck(this, DragonAvatar);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(DragonAvatar).apply(this, arguments));
+  }
+
+  _createClass(DragonAvatar, [{
+    key: "render",
+    value: function render() {
+      var _this$props$dragon = this.props.dragon,
+          generationId = _this$props$dragon.generationId,
+          dragonId = _this$props$dragon.dragonId,
+          traits = _this$props$dragon.traits;
+      return _react.default.createElement("div", null, _react.default.createElement("span", null, "G", generationId, "."), _react.default.createElement("span", null, "I", dragonId, "."), traits.map(function (trait) {
+        return trait.traitValue;
+      }).join(', '));
+    }
+  }]);
+
+  return DragonAvatar;
+}(_react.Componet);
+
+var _default = DragonAvatar;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js"}],"componets/Dragon.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _DragonAvatar = _interopRequireDefault(require("./DragonAvatar"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var DEFAULT_DRAGON = {
+  dragonId: '',
+  generationId: '',
+  nickname: '',
+  birthdate: '',
+  traits: []
+};
+
+var Dragon =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Dragon, _Component);
+
+  function Dragon() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    var _temp;
+
+    _classCallCheck(this, Dragon);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Dragon)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
+      dragon: DEFAULT_DRAGON
+    }, _this.fetchDragon = function () {
+      fetch('http://localhost:3000/dragon/new').then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        return _this.setState({
+          dragon: json.dragon
+        });
+      }).catch(function (error) {
+        return console.error('error', error);
+      });
+    }, _temp));
+  }
+
+  _createClass(Dragon, [{
+    key: "componetDidMount",
+    value: function componetDidMount() {
+      this.fetchDragon();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react.default.createElement(_DragonAvatar.default, {
+        dragon: this.state.dragon
+      });
+    }
+  }]);
+
+  return Dragon;
+}(_react.Component);
+
+var _default = Dragon;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./DragonAvatar":"componets/DragonAvatar.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -24081,10 +24283,12 @@ var _reactDom = require("react-dom");
 
 var _Generation = _interopRequireDefault(require("./componets/Generation"));
 
+var _Dragon = _interopRequireDefault(require("./componets/Dragon"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(0, _reactDom.render)(_react.default.createElement("div", null, _react.default.createElement("h2", null, "Dragon Stack from React"), _react.default.createElement(_Generation.default, null)), document.getElementById('root'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./componets/Generation":"componets/Generation.js"}],"../../../../../../.nvm/versions/node/v8.11.3/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+(0, _reactDom.render)(_react.default.createElement("div", null, _react.default.createElement("h2", null, "Dragon Stack from React"), _react.default.createElement(_Generation.default, null), _react.default.createElement(_Dragon.default, null)), document.getElementById('root'));
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./componets/Generation":"componets/Generation.js","./componets/Dragon":"componets/Dragon.js"}],"../../../../../../.nvm/versions/node/v8.11.3/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -24111,7 +24315,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62381" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63074" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
