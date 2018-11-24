@@ -43023,6 +43023,33 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+var propertyMap = {
+  backgroundColor: {
+    black: '#263238',
+    white: '#CFD8DC',
+    green: '#A5D6A7',
+    blue: '#0277BD'
+  },
+  build: {
+    slender: slender,
+    stocky: stocky,
+    sporty: sporty,
+    skinny: skinny
+  },
+  pattern: {
+    plain: plain,
+    striped: striped,
+    spotted: spotted,
+    patchy: patchy
+  },
+  size: {
+    small: 100,
+    medium: 140,
+    large: 180,
+    enormous: 220
+  }
+};
+
 var DragonAvatar =
 /*#__PURE__*/
 function (_Component) {
@@ -43191,7 +43218,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59483" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64413" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
