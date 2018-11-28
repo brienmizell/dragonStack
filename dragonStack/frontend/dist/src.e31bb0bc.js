@@ -26958,11 +26958,11 @@ function (_Component) {
     key: "componentDidMount",
     //object that has not been set yet
     value: function componentDidMount() {
-      this.fetchGeneration();
+      this.fetchNextGeneration();
     }
   }, {
-    key: "componentWillUnMount",
-    value: function componentWillUnMount() {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
       clearTimeout(this.timer);
     }
   }, {
@@ -26970,7 +26970,7 @@ function (_Component) {
     value: function render() {
       console.log("this.props", this.props);
       var generation = this.props.generation;
-      return _react.default.createElement("div", null, " ", _react.default.createElement("h3", null, " Generation ", generation.generationId, ".Expires on : "), " ", _react.default.createElement("h4", null, " ", new Date(generation.expiration).toString(), " "), " ");
+      return _react.default.createElement("div", null, _react.default.createElement("h3", null, "Generation ", generation.generationId, ". Expires on:"), _react.default.createElement("h4", null, new Date(generation.expiration).toString()));
     }
   }]);
 
@@ -45121,7 +45121,62 @@ function (_Component) {
 
 var _default = Dragon;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-bootstrap":"../node_modules/react-bootstrap/es/index.js","./DragonAvatar":"componets/DragonAvatar.js"}],"../../../../../../.nvm/versions/node/v8.11.3/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-bootstrap":"../node_modules/react-bootstrap/es/index.js","./DragonAvatar":"componets/DragonAvatar.js"}],"actions/types.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GENERATION_ACTION_TYPE = void 0;
+var GENERATION_ACTION_TYPE = "GENERATION_ACTION_TYPE";
+exports.GENERATION_ACTION_TYPE = GENERATION_ACTION_TYPE;
+},{}],"reducers/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.generationReducer = void 0;
+
+var _types = require("../actions/types");
+
+var DEFAULT_GENERATION = {
+  generationId: "",
+  expiration: ""
+};
+
+var generationReducer = function generationReducer(state, action) {
+  if (action.type === _types.GENERATION_ACTION_TYPE) {
+    return {
+      generation: action.generation
+    };
+  }
+
+  return {
+    generation: DEFAULT_GENERATION
+  };
+};
+
+exports.generationReducer = generationReducer;
+},{"../actions/types":"actions/types.js"}],"actions/generation.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.generationActionCreator = void 0;
+
+var _types = require("./types");
+
+var generationActionCreator = function generationActionCreator(payload) {
+  return {
+    type: _types.GENERATION_ACTION_TYPE,
+    generation: payload
+  };
+};
+
+exports.generationActionCreator = generationActionCreator;
+},{"./types":"actions/types.js"}],"../../../../../../.nvm/versions/node/v8.11.3/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -45206,64 +45261,25 @@ var _Generation = _interopRequireDefault(require("./componets/Generation"));
 
 var _Dragon = _interopRequireDefault(require("./componets/Dragon"));
 
+var _reducers = require("./reducers");
+
+var _generation = require("./actions/generation");
+
 require("./index.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var DEFAULT_GENERATION = {
-  generationId: "",
-  expiration: ""
-};
-var GENERATION_ACTION_TYPE = "GENERATION_ACTION_TYPE";
-
-var generationReducer = function generationReducer(state, action) {
-  if (action.type === GENERATION_ACTION_TYPE) {
-    return {
-      generation: action.generation
-    };
-  }
-
-  return {
-    generation: DEFAULT_GENERATION
-  };
-};
-
-var store = (0, _redux.createStore)(generationReducer);
+var store = (0, _redux.createStore)(_reducers.generationReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 store.subscribe(function () {
   return console.log("store state update", store.getState());
 });
-console.log("store", store);
-store.dispatch({
-  type: "foo"
-});
-store.dispatch({
-  type: GENERATION_ACTION_TYPE,
-  generation: {
-    generationId: "goo",
-    expiration: "bar"
-  }
-});
-console.log("store.getState()", store.getState());
-
-var generationActionCreator = function generationActionCreator(payload) {
-  return {
-    type: GENERATION_ACTION_TYPE,
-    generation: payload
-  };
-};
-
-var zooAction = generationActionCreator({
-  generationId: "zoo",
-  expiration: "bar"
-});
-store.dispatch(zooAction);
 fetch("http://localhost:3000/generation").then(function (response) {
   return response.json();
 }).then(function (json) {
-  store.dispatch(generationActionCreator(json.generation));
+  store.dispatch((0, _generation.generationActionCreator)(json.generation));
 });
-(0, _reactDom.render)(_react.default.createElement("div", null, _react.default.createElement("h2", null, "Dragon Stack"), _react.default.createElement(_Generation.default, null), _react.default.createElement(_Dragon.default, null)), document.getElementById("root"));
-},{"react":"../node_modules/react/index.js","redux":"../node_modules/redux/es/redux.js","react-dom":"../node_modules/react-dom/index.js","./componets/Generation":"componets/Generation.js","./componets/Dragon":"componets/Dragon.js","./index.css":"index.css"}],"../../../../../../.nvm/versions/node/v8.11.3/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+(0, _reactDom.render)(_react.default.createElement("div", null, _react.default.createElement("h2", null, "Dragon Stack from React"), _react.default.createElement(_Generation.default, null), _react.default.createElement(_Dragon.default, null)), document.getElementById("root"));
+},{"react":"../node_modules/react/index.js","redux":"../node_modules/redux/es/redux.js","react-dom":"../node_modules/react-dom/index.js","./componets/Generation":"componets/Generation.js","./componets/Dragon":"componets/Dragon.js","./reducers":"reducers/index.js","./actions/generation":"actions/generation.js","./index.css":"index.css"}],"../../../../../../.nvm/versions/node/v8.11.3/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -45290,7 +45306,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49407" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55272" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
