@@ -1,56 +1,65 @@
-import React, { Component } from 'react';
-
-const DEFAULT_GENERATION = { generationId: '', expiration: '' };
+import React, { Component } from "react";
+import { connect } from "react-redux";
+// import {generationActionCreator} from '../actions/generation';
 
 const MINIMUM_DELAY = 3000;
 
 class Generation extends Component {
-	state = { generation: DEFAULT_GENERATION };
+  timer = null; //object that has not been set yet
 
-	timer = null;
+  componentDidMount() {
+    this.fetchGeneration();
+  }
+  componentWillUnMount() {
+    clearTimeout(this.timer);
+  }
 
-	componentDidMount() {
-		this.fetchNextGeneration();
-	}
+  fetchGeneration = () => {
+    fetch("http://localhost:1234/generation")
+      .then(response => response.json())
+      .then(json => {
+        this.props.dispatch(generationActionCreator(json.generation));
+      })
+      .catch(error => console.error("error", error));
+  };
 
-	componentWillUnmount() {
-		clearTimeout(this.timer);
-	}
+  fetchNextGeneration = () => {
+    this.fetchGeneration();
 
-	fetchGeneration = () => {
-		fetch('http://localhost:3000/generation')
-			.then((response) => response.json())
-			.then((json) => {
-				console.log('json', json);
+    let delay =
+      new Date(this.props.generation.expiration).getTime() -
+      new Date().getTime();
 
-				this.setState({ generation: json.generation });
-			})
-			.catch((error) => console.error('error', error));
-	};
+    if (delay < MINIMUM_DELAY) {
+      delay = MINIMUM_DELAY;
+    }
 
-	fetchNextGeneration = () => {
-		this.fetchGeneration();
+    this.timer = setTimeout(() => this.fetchNextGeneration(), delay);
+  };
 
-		let delay = new Date(this.state.generation.expiration).getTime() - new Date().getTime();
+  render() {
+    console.log("this.props", this.props);
+    const { generation } = this.props;
 
-		if (delay < MINIMUM_DELAY) {
-			delay = MINIMUM_DELAY;
-		}
-
-		this.timer = setTimeout(() => {
-			this.fetchNextGeneration();
-		}, delay);
-	};
-
-	render() {
-		const { generation } = this.state;
-		return (
-			<div>
-				<h3>Generation {generation.generationId}. Expires on:</h3>
-				<h4>{new Date(generation.expiration).toString()}</h4>
-			</div>
-		);
-	}
+    return (
+      <div>
+        {" "}
+        <h3> Generation {generation.generationId}.Expires on : </h3>{" "}
+        <h4> {new Date(generation.expiration).toString()} </h4>{" "}
+      </div>
+    );
+  }
 }
 
-export default Generation;
+const mapStateToProps = state => {
+  const generation = state.generation;
+
+  return {
+    generation
+  };
+};
+
+const componentConnector = connect(mapStateToProps);
+
+export default componentConnector(Generation);
+//takes entire component class as its argument above, wraps around it
