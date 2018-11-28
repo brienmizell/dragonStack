@@ -8,9 +8,10 @@ class Generation extends Component {
   timer = null; //object that has not been set yet
 
   componentDidMount() {
-    this.fetchGeneration();
+    this.fetchNextGeneration();
   }
-  componentWillUnMount() {
+
+  componentWillUnmount() {
     clearTimeout(this.timer);
   }
 
@@ -43,9 +44,8 @@ class Generation extends Component {
 
     return (
       <div>
-        {" "}
-        <h3> Generation {generation.generationId}.Expires on : </h3>{" "}
-        <h4> {new Date(generation.expiration).toString()} </h4>{" "}
+        <h3>Generation {generation.generationId}. Expires on:</h3>
+        <h4>{new Date(generation.expiration).toString()}</h4>
       </div>
     );
   }
