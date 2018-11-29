@@ -29,7 +29,7 @@ class Dragon extends Component {
   }
 }
 
-export default connect(
-  ({ dragon }) => ({ dragon }),
-  { fetchDragon }
-)(Dragon);
+// export default connect(
+//   ({ dragon }) => ({ dragon }),
+//   { fetchDragon }
+// )(Dragon);
