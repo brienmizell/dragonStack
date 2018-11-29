@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// import {generationActionCreator} from '../actions/generation';
+import { generationActionCreator } from "../actions/generation";
+import { fetchGeneration } from "../actions/generation";
+// import fetchStates from "../reducers/fetchStates";
 
 const MINIMUM_DELAY = 3000;
 
@@ -16,10 +18,10 @@ class Generation extends Component {
   }
 
   fetchGeneration = () => {
-    fetch("http://localhost:1234/generation")
+    fetch("http://localhost:3000/generation")
       .then(response => response.json())
       .then(json => {
-        this.props.dispatch(generationActionCreator(json.generation));
+        this.props.dispatchGeneration(json.generation);
       })
       .catch(error => console.error("error", error));
   };
@@ -59,7 +61,17 @@ const mapStateToProps = state => {
   };
 };
 
-const componentConnector = connect(mapStateToProps);
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchGeneration: generation =>
+      dispatch(generationActionCreator(generation))
+  };
+};
+
+const componentConnector = connect(
+  mapStateToProps,
+  mapDispatchToProps
+);
 
 export default componentConnector(Generation);
 //takes entire component class as its argument above, wraps around it
