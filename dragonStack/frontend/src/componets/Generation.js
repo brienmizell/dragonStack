@@ -17,6 +17,15 @@ class Generation extends Component {
     clearTimeout(this.timer);
   }
 
+  fetchGeneration = () => {
+    fetch("http://localhost:3000/generation")
+      .then(response => response.json())
+      .then(json => {
+        this.props.dispatchGeneration(json.generation);
+      })
+      .catch(error => console.error("error", error));
+  };
+
   fetchNextGeneration = () => {
     this.props.fetchGeneration();
 
@@ -52,11 +61,17 @@ const mapStateToProps = state => {
   };
 };
 
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     fetchGeneration: () => fetchGeneration(dispatch)
+//   };
+// };
+
 const fetchGeneration = () => dispatch => {
   return fetch("http://localhost:3000/generation")
     .then(response => response.json())
     .then(json => {
-      dispatch(generationActionCreator(json.generation));
+      dispatch(dispatchGeneration(json.generation));
     })
     .catch(error => console.error("error", error));
 };

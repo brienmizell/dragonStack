@@ -26978,7 +26978,35 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"actions/types.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"../node_modules/redux-thunk/es/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function createThunkMiddleware(extraArgument) {
+  return function (_ref) {
+    var dispatch = _ref.dispatch,
+        getState = _ref.getState;
+    return function (next) {
+      return function (action) {
+        if (typeof action === 'function') {
+          return action(dispatch, getState, extraArgument);
+        }
+
+        return next(action);
+      };
+    };
+  };
+}
+
+var thunk = createThunkMiddleware();
+thunk.withExtraArgument = createThunkMiddleware;
+var _default = thunk;
+exports.default = _default;
+},{}],"actions/types.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27101,7 +27129,7 @@ function (_Component) {
         return console.error("error", error);
       });
     }, _this.fetchNextGeneration = function () {
-      _this.fetchGeneration();
+      _this.props.fetchGeneration();
 
       var delay = new Date(_this.props.generation.expiration).getTime() - new Date().getTime();
 
@@ -27143,30 +27171,28 @@ var mapStateToProps = function mapStateToProps(state) {
   return {
     generation: generation
   };
-};
+}; // const mapDispatchToProps = dispatch => {
+//   return {
+//     fetchGeneration: () => fetchGeneration(dispatch)
+//   };
+// };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    dispatchGeneration: function dispatchGeneration(generation) {
-      return dispatch((0, _generation.generationActionCreator)(generation));
-    },
-    fetchGeneration: function fetchGeneration() {
-      return _fetchGeneration(dispatch);
-    }
+
+var fetchGeneration = function fetchGeneration() {
+  return function (dispatch) {
+    return fetch("http://localhost:3000/generation").then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      dispatch(dispatchGeneration(json.generation));
+    }).catch(function (error) {
+      return console.error("error", error);
+    });
   };
 };
 
-var _fetchGeneration = function _fetchGeneration(dispatch) {
-  return fetch("http://localhost:3000/generation").then(function (response) {
-    return response.json();
-  }).then(function (json) {
-    dispatch((0, _generation.generationActionCreator)(json.generation));
-  }).catch(function (error) {
-    return console.error("error", error);
-  });
-};
-
-var componentConnector = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps);
+var componentConnector = (0, _reactRedux.connect)(mapStateToProps, {
+  fetchGeneration: fetchGeneration
+});
 
 var _default = componentConnector(Generation); //takes entire component class as its argument above, wraps around it
 
@@ -45634,29 +45660,23 @@ var _reactRedux = require("react-redux");
 
 var _reactDom = require("react-dom");
 
+var _reduxThunk = _interopRequireDefault(require("redux-thunk"));
+
 var _Generation = _interopRequireDefault(require("./componets/Generation"));
 
 var _Dragon = _interopRequireDefault(require("./componets/Dragon"));
 
 var _reducers = require("./reducers");
 
-var _generation = require("./actions/generation");
-
 require("./index.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _redux.createStore)(_reducers.generationReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-store.subscribe(function () {
-  return console.log("store state update", store.getState());
-});
-fetch("http://localhost:3000/generation").then(function (response) {
-  return response.json();
-}).then(function (json) {
-  store.dispatch((0, _generation.generationActionCreator)(json.generation));
-});
-(0, _reactDom.render)(_react.default.createElement("provider", null, _react.default.createElement("div", null, _react.default.createElement("h2", null, "Dragon Stack from React"), _react.default.createElement(_Generation.default, null), _react.default.createElement(_Dragon.default, null))), document.getElementById("root"));
-},{"react":"../node_modules/react/index.js","redux":"../node_modules/redux/es/redux.js","react-redux":"../node_modules/react-redux/es/index.js","react-dom":"../node_modules/react-dom/index.js","./componets/Generation":"componets/Generation.js","./componets/Dragon":"componets/Dragon.js","./reducers":"reducers/index.js","./actions/generation":"actions/generation.js","./index.css":"index.css"}],"../../../../../../.nvm/versions/node/v8.11.3/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+var store = (0, _redux.createStore)(_reducers.generationReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), (0, _redux.applyMiddleware)(_reduxThunk.default));
+(0, _reactDom.render)(_react.default.createElement(_reactRedux.Provider, {
+  store: store
+}, _react.default.createElement("div", null, _react.default.createElement("h2", null, "Dragon Stack from React"), _react.default.createElement(_Generation.default, null), _react.default.createElement(_Dragon.default, null))), document.getElementById("root"));
+},{"react":"../node_modules/react/index.js","redux":"../node_modules/redux/es/redux.js","react-redux":"../node_modules/react-redux/es/index.js","react-dom":"../node_modules/react-dom/index.js","redux-thunk":"../node_modules/redux-thunk/es/index.js","./componets/Generation":"componets/Generation.js","./componets/Dragon":"componets/Dragon.js","./reducers":"reducers/index.js","./index.css":"index.css"}],"../../../../../../.nvm/versions/node/v8.11.3/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -45683,7 +45703,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54415" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51789" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
