@@ -45680,13 +45680,21 @@ var _Generation = _interopRequireDefault(require("./componets/Generation"));
 
 var _Dragon = _interopRequireDefault(require("./componets/Dragon"));
 
+<<<<<<< HEAD
+var _reducers = require("./reducers");
+=======
 var _reducers = _interopRequireDefault(require("./reducers"));
+>>>>>>> introduced fetch generation reducers
 
 require("./index.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+<<<<<<< HEAD
+var store = (0, _redux.createStore)(_reducers.generationReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), (0, _redux.applyMiddleware)(_reduxThunk.default));
+=======
 var store = (0, _redux.createStore)(_reducers.default, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), (0, _redux.applyMiddleware)(_reduxThunk.default));
+>>>>>>> introduced fetch generation reducers
 (0, _reactDom.render)(_react.default.createElement(_reactRedux.Provider, {
   store: store
 }, _react.default.createElement("div", null, _react.default.createElement("h2", null, "Dragon Stack from React"), _react.default.createElement(_Generation.default, null), _react.default.createElement(_Dragon.default, null))), document.getElementById("root"));
@@ -45717,7 +45725,11 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
+<<<<<<< HEAD
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51789" + '/');
+=======
   var ws = new WebSocket(protocol + '://' + hostname + ':' + "51799" + '/');
+>>>>>>> introduced fetch generation reducers
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
