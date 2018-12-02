@@ -15,5 +15,8 @@
 	"dependencies": {
 		"cors": "^2.8.5",
 		"pg": "^7.6.1"
+	},
+	"devDependencies": {
+		"babel-plugin-transform-object-rest-spread": "^6.26.0"
 	}
 }

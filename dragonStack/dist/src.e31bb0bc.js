@@ -27120,6 +27120,7 @@ function (_Component) {
       args[_key] = arguments[_key];
     }
 
+<<<<<<< HEAD
     return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Generation)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.timer = null, _this.fetchGeneration = function () {
       fetch("http://localhost:3000/generation").then(function (response) {
         return response.json();
@@ -27129,6 +27130,9 @@ function (_Component) {
         return console.error("error", error);
       });
     }, _this.fetchNextGeneration = function () {
+=======
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Generation)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.timer = null, _this.fetchNextGeneration = function () {
+>>>>>>> introduced fetch generation reducers
       _this.props.fetchGeneration();
 
       var delay = new Date(_this.props.generation.expiration).getTime() - new Date().getTime();
@@ -27171,6 +27175,7 @@ var mapStateToProps = function mapStateToProps(state) {
   return {
     generation: generation
   };
+<<<<<<< HEAD
 }; // const mapDispatchToProps = dispatch => {
 //   return {
 //     fetchGeneration: () => fetchGeneration(dispatch)
@@ -27192,6 +27197,20 @@ var fetchGeneration = function fetchGeneration() {
 
 var componentConnector = (0, _reactRedux.connect)(mapStateToProps, {
   fetchGeneration: fetchGeneration
+=======
+}; // const fetchGeneration = () => dispatch => {
+//   return fetch("http://localhost:3000/generation")
+//     .then(response => response.json())
+//     .then(json => {
+//       dispatch(generationActionCreator(json.generation));
+//     })
+//     .catch(error => console.error("error", error));
+// };
+
+
+var componentConnector = (0, _reactRedux.connect)(mapStateToProps, {
+  fetchGeneration: _generation.fetchGeneration
+>>>>>>> introduced fetch generation reducers
 });
 
 var _default = componentConnector(Generation); //takes entire component class as its argument above, wraps around it
@@ -45549,35 +45568,66 @@ function (_Component) {
 //   ({ dragon }) => ({ dragon }),
 //   { fetchDragon }
 // )(Dragon);
-},{"react":"../node_modules/react/index.js","react-bootstrap":"../node_modules/react-bootstrap/es/index.js","./DragonAvatar":"componets/DragonAvatar.js"}],"reducers/index.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-bootstrap":"../node_modules/react-bootstrap/es/index.js","./DragonAvatar":"componets/DragonAvatar.js"}],"reducers/generation.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.generationReducer = void 0;
+exports.default = void 0;
 
 var _types = require("../actions/types");
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var DEFAULT_GENERATION = {
   generationId: "",
   expiration: ""
 };
 
-var generationReducer = function generationReducer(state, action) {
-  if (action.type === _types.GENERATION_ACTION_TYPE) {
-    return {
-      generation: action.generation
-    };
-  }
+var generationReducer = function generationReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_GENERATION;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
 
-  return {
-    generation: DEFAULT_GENERATION
-  };
+  switch (action.type) {
+    case _types.GENERATION.FETCH:
+      return state;
+
+    case _types.GENERATION.FETCH_ERROR:
+      return _extends({}, state, {
+        message: action.message
+      });
+
+    case _types.GENERATION.FETCH_SUCCESS:
+      return _extends({}, state, action.generation);
+
+    default:
+      return state;
+  }
 };
 
-exports.generationReducer = generationReducer;
-},{"../actions/types":"actions/types.js"}],"../../../../../../.nvm/versions/node/v8.11.3/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var _default = generationReducer;
+exports.default = _default;
+},{"../actions/types":"actions/types.js"}],"reducers/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _generation = _interopRequireDefault(require("./generation"));
+
+var _redux = require("redux");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = (0, _redux.combineReducers)({
+  generation: _generation.default
+});
+
+exports.default = _default;
+},{"./generation":"reducers/generation.js","redux":"../node_modules/redux/es/redux.js"}],"../../../../../../.nvm/versions/node/v8.11.3/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -45666,13 +45716,21 @@ var _Generation = _interopRequireDefault(require("./componets/Generation"));
 
 var _Dragon = _interopRequireDefault(require("./componets/Dragon"));
 
+<<<<<<< HEAD
 var _reducers = require("./reducers");
+=======
+var _reducers = _interopRequireDefault(require("./reducers"));
+>>>>>>> introduced fetch generation reducers
 
 require("./index.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+<<<<<<< HEAD
 var store = (0, _redux.createStore)(_reducers.generationReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), (0, _redux.applyMiddleware)(_reduxThunk.default));
+=======
+var store = (0, _redux.createStore)(_reducers.default, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), (0, _redux.applyMiddleware)(_reduxThunk.default));
+>>>>>>> introduced fetch generation reducers
 (0, _reactDom.render)(_react.default.createElement(_reactRedux.Provider, {
   store: store
 }, _react.default.createElement("div", null, _react.default.createElement("h2", null, "Dragon Stack from React"), _react.default.createElement(_Generation.default, null), _react.default.createElement(_Dragon.default, null))), document.getElementById("root"));
@@ -45703,7 +45761,11 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
+<<<<<<< HEAD
   var ws = new WebSocket(protocol + '://' + hostname + ':' + "51789" + '/');
+=======
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51799" + '/');
+>>>>>>> introduced fetch generation reducers
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

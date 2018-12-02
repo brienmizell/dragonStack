@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { generationActionCreator } from "../actions/generation";
+import { fetchGeneration } from "../actions/generation";
 // import { fetchGeneration } from "../actions/generation";
 // import fetchStates from "../reducers/fetchStates";
 
@@ -61,6 +61,7 @@ const mapStateToProps = state => {
   };
 };
 
+<<<<<<< HEAD
 // const mapDispatchToProps = dispatch => {
 //   return {
 //     fetchGeneration: () => fetchGeneration(dispatch)
@@ -75,6 +76,16 @@ const fetchGeneration = () => dispatch => {
     })
     .catch(error => console.error("error", error));
 };
+=======
+// const fetchGeneration = () => dispatch => {
+//   return fetch("http://localhost:3000/generation")
+//     .then(response => response.json())
+//     .then(json => {
+//       dispatch(generationActionCreator(json.generation));
+//     })
+//     .catch(error => console.error("error", error));
+// };
+>>>>>>> introduced fetch generation reducers
 
 const componentConnector = connect(
   mapStateToProps,
