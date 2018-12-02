@@ -27064,7 +27064,20 @@ var fetchGeneration = function fetchGeneration() {
 };
 
 exports.fetchGeneration = fetchGeneration;
-},{"./types":"actions/types.js"}],"componets/Generation.js":[function(require,module,exports) {
+},{"./types":"actions/types.js"}],"reducers/fetchStates.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _default = {
+  fetching: "fetching",
+  error: "error",
+  success: "success"
+};
+exports.default = _default;
+},{}],"componets/Generation.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27077,6 +27090,10 @@ var _react = _interopRequireWildcard(require("react"));
 var _reactRedux = require("react-redux");
 
 var _generation = require("../actions/generation");
+
+var _fetchStates = _interopRequireDefault(require("../reducers/fetchStates"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
@@ -27098,8 +27115,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-// import { fetchGeneration } from "../actions/generation";
-// import fetchStates from "../reducers/fetchStates";
 var MINIMUM_DELAY = 3000;
 
 var Generation =
@@ -27120,7 +27135,15 @@ function (_Component) {
       args[_key] = arguments[_key];
     }
 
-    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Generation)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.timer = null, _this.fetchNextGeneration = function () {
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Generation)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.timer = null, _this.fetchGeneration = function () {
+      fetch("http://localhost:3000/generation").then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        _this.props.dispatchGeneration(json.generation);
+      }).catch(function (error) {
+        return console.error("error", error);
+      });
+    }, _this.fetchNextGeneration = function () {
       _this.props.fetchGeneration();
 
       var delay = new Date(_this.props.generation.expiration).getTime() - new Date().getTime();
@@ -27150,7 +27173,14 @@ function (_Component) {
     key: "render",
     value: function render() {
       console.log("this.props", this.props);
-      var generation = this.props.generation;
+      var generation = this.props.generation; // if (generation.status === fetchStates.fetching) {
+      //   return <div>...</div>;
+      // }
+
+      if (generation.status === _fetchStates.default.error) {
+        return _react.default.createElement("div", null, generation.message);
+      }
+
       return _react.default.createElement("div", null, _react.default.createElement("h3", null, "Generation ", generation.generationId, ". Expires on:"), _react.default.createElement("h4", null, new Date(generation.expiration).toString()));
     }
   }]);
@@ -27163,15 +27193,7 @@ var mapStateToProps = function mapStateToProps(state) {
   return {
     generation: generation
   };
-}; // const fetchGeneration = () => dispatch => {
-//   return fetch("http://localhost:3000/generation")
-//     .then(response => response.json())
-//     .then(json => {
-//       dispatch(generationActionCreator(json.generation));
-//     })
-//     .catch(error => console.error("error", error));
-// };
-
+};
 
 var componentConnector = (0, _reactRedux.connect)(mapStateToProps, {
   fetchGeneration: _generation.fetchGeneration
@@ -27181,7 +27203,7 @@ var _default = componentConnector(Generation); //takes entire component class as
 
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","../actions/generation":"actions/generation.js"}],"../node_modules/core-js/library/modules/_global.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","../actions/generation":"actions/generation.js","../reducers/fetchStates":"reducers/fetchStates.js"}],"../node_modules/core-js/library/modules/_global.js":[function(require,module,exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
@@ -45542,7 +45564,11 @@ exports.default = void 0;
 
 var _types = require("../actions/types");
 
+var _fetchStates = _interopRequireDefault(require("./fetchStates"));
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var DEFAULT_GENERATION = {
   generationId: "",
@@ -45555,15 +45581,20 @@ var generationReducer = function generationReducer() {
 
   switch (action.type) {
     case _types.GENERATION.FETCH:
-      return state;
+      return _extends({}, state, {
+        status: _fetchStates.default.fetching
+      });
 
     case _types.GENERATION.FETCH_ERROR:
       return _extends({}, state, {
+        status: _fetchStates.default.error,
         message: action.message
       });
 
     case _types.GENERATION.FETCH_SUCCESS:
-      return _extends({}, state, action.generation);
+      return _extends({}, state, {
+        status: _fetchStates.default.success
+      }, action.generation);
 
     default:
       return state;
@@ -45572,7 +45603,7 @@ var generationReducer = function generationReducer() {
 
 var _default = generationReducer;
 exports.default = _default;
-},{"../actions/types":"actions/types.js"}],"reducers/index.js":[function(require,module,exports) {
+},{"../actions/types":"actions/types.js","./fetchStates":"reducers/fetchStates.js"}],"reducers/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45680,21 +45711,13 @@ var _Generation = _interopRequireDefault(require("./componets/Generation"));
 
 var _Dragon = _interopRequireDefault(require("./componets/Dragon"));
 
-<<<<<<< HEAD
-var _reducers = require("./reducers");
-=======
 var _reducers = _interopRequireDefault(require("./reducers"));
->>>>>>> introduced fetch generation reducers
 
 require("./index.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-<<<<<<< HEAD
-var store = (0, _redux.createStore)(_reducers.generationReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), (0, _redux.applyMiddleware)(_reduxThunk.default));
-=======
 var store = (0, _redux.createStore)(_reducers.default, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), (0, _redux.applyMiddleware)(_reduxThunk.default));
->>>>>>> introduced fetch generation reducers
 (0, _reactDom.render)(_react.default.createElement(_reactRedux.Provider, {
   store: store
 }, _react.default.createElement("div", null, _react.default.createElement("h2", null, "Dragon Stack from React"), _react.default.createElement(_Generation.default, null), _react.default.createElement(_Dragon.default, null))), document.getElementById("root"));
@@ -45725,11 +45748,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-<<<<<<< HEAD
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51789" + '/');
-=======
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51799" + '/');
->>>>>>> introduced fetch generation reducers
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56720" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
