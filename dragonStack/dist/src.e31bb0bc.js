@@ -45445,6 +45445,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+// import {
+//   skinny,
+//   slender,
+//   sporty,
+//   stocky,
+//   patchy,
+//   plain,
+//   spotted,
+//   striped
+// } from "../assets";
+// const propertyMap = {
+//   backgroundColor: {
+//     black: "#263238",
+//     white: "#cfd8dc",
+//     green: "#a5d6a7",
+//     blue: "#0277bd"
+//   },
+//   build: { slender, stocky, sporty, skinny },
+//   pattern: { plain, striped, spotted, patchy },
+//   size: { small: 100, medium: 140, large: 180, enormous: 220 }
+// };
 var DragonAvatar =
 /*#__PURE__*/
 function (_Component) {
@@ -45458,6 +45479,22 @@ function (_Component) {
 
   _createClass(DragonAvatar, [{
     key: "render",
+    // get DragonImage() {
+    // 	const dragonPropertyMap = {};
+    // 	this.props.dragon.traits.forEach(trait => {
+    // 	  const { traitType, traitValue } = trait;
+    // 	  dragonPropertyMap[traitType] = propertyMap[traitType][traitValue];
+    // 	});
+    // 	const { backgroundColor, build, pattern, size } = dragonPropertyMap;
+    // 	const sizing = { width: size, height: size };
+    // 	return (
+    // 	  <div className='dragon-avatar-image-wrapper'>
+    // 		<div className='dragon-avatar-image-background' style={{ backgroundColor, ...sizing }}></div>
+    // 		<img src={pattern} className='dragon-avatar-image-pattern' style={{ ...sizing }} />
+    // 		<img src={build} className='dragon-avatar-image' style={{ ...sizing }} />
+    // 	  </div>
+    // 	);
+    //   }
     value: function render() {
       var _this$props$dragon = this.props.dragon,
           generationId = _this$props$dragon.generationId,
@@ -45832,7 +45869,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56720" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64191" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
