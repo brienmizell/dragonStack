@@ -45693,7 +45693,7 @@ function (_Component) {
       if (!dragonId) return _react.default.createElement("div", null);
       return _react.default.createElement("div", null, _react.default.createElement("span", null, "G", generationId, "."), _react.default.createElement("span", null, "I", dragonId, ". "), traits.map(function (trait) {
         return trait.traitValue;
-      }).join(", "));
+      }).join(", "), this.DragonImage);
     }
   }]);
 
@@ -45717,25 +45717,27 @@ var _config = require("../config");
 var fetchDragon = function fetchDragon() {
   return function (dispatch) {
     dispatch({
-      type: DRAGON.FETCH
+      type: _types.DRAGON.FETCH
     });
-    return fetch("".concat(_config.BACKEND.ADDRESS, "/dragon/new")).then(function (response) {
+    return fetch("".concat(_config.BACKEND.ADDRESS, "/dragon/new"), {
+      credentials: "include"
+    }).then(function (response) {
       return response.json();
     }).then(function (json) {
       if (json.type === "error") {
         dispatch({
-          type: DRAGON.FETCH_ERROR,
+          type: _types.DRAGON.FETCH_ERROR,
           message: json.message
         });
       } else {
         dispatch({
-          type: DRAGON.FETCH_SUCCESS,
+          type: _types.DRAGON.FETCH_SUCCESS,
           dragon: json.dragon
         });
       }
     }).catch(function (error) {
       return dispatch({
-        type: DRAGON.FETCH_ERROR,
+        type: _types.DRAGON.FETCH_ERROR,
         message: error.message
       });
     });

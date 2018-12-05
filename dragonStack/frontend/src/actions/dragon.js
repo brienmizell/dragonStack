@@ -1,10 +1,12 @@
-import { dragon } from "./types";
+import { DRAGON } from "./types";
 import { BACKEND } from "../config";
 
 export const fetchDragon = () => dispatch => {
   dispatch({ type: DRAGON.FETCH });
 
-  return fetch(`${BACKEND.ADDRESS}/dragon/new`)
+  return fetch(`${BACKEND.ADDRESS}/dragon/new`, {
+    credentials: "include"
+  })
     .then(response => response.json())
     .then(json => {
       if (json.type === "error") {
