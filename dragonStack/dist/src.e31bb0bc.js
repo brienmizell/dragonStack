@@ -27217,6 +27217,53 @@ var generationReducer = function generationReducer() {
 
 var _default = generationReducer;
 exports.default = _default;
+},{"../actions/types":"actions/types.js","./fetchStates":"reducers/fetchStates.js"}],"reducers/accountDragons.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _types = require("../actions/types");
+
+var _fetchStates = require("./fetchStates");
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var DEFAULT_ACCOUNTS_DRAGON = {
+  dragons: []
+};
+
+var accountDragons = function accountDragons() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_ACCOUNTS_DRAGON;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case _types.ACCOUNT_DRAGONS.FETCH:
+      return _extends({}, state, {
+        status: _fetchStates.fetchStates.fetching
+      });
+
+    case _types.ACCOUNT_DRAGONS.FETCH_ERROR:
+      return _extends({}, state, {
+        status: _fetchStates.fetchStates.error,
+        message: action.message
+      });
+
+    case _types.ACCOUNT_DRAGONS.FETCH_SUCCESS:
+      return _extends({}, state, {
+        status: _fetchStates.fetchStates.success,
+        message: action.dragons
+      });
+
+    default:
+      return state;
+  }
+};
+
+var _default = accountDragons;
+exports.default = _default;
 },{"../actions/types":"actions/types.js","./fetchStates":"reducers/fetchStates.js"}],"reducers/index.js":[function(require,module,exports) {
 "use strict";
 
@@ -27233,16 +27280,19 @@ var _dragon = _interopRequireDefault(require("./dragon"));
 
 var _generation = _interopRequireDefault(require("./generation"));
 
+var _accountDragons = _interopRequireDefault(require("./accountDragons"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _default = (0, _redux.combineReducers)({
   generation: _generation.default,
   dragon: _dragon.default,
-  account: _account.default
+  account: _account.default,
+  accountDragons: _accountDragons.default
 });
 
 exports.default = _default;
-},{"redux":"../node_modules/redux/es/redux.js","./account":"reducers/account.js","./dragon":"reducers/dragon.js","./generation":"reducers/generation.js"}],"../node_modules/core-js/library/modules/_global.js":[function(require,module,exports) {
+},{"redux":"../node_modules/redux/es/redux.js","./account":"reducers/account.js","./dragon":"reducers/dragon.js","./generation":"reducers/generation.js","./accountDragons":"reducers/accountDragons.js"}],"../node_modules/core-js/library/modules/_global.js":[function(require,module,exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
