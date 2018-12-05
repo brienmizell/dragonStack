@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, FormGroup, FormControl } from "react-bootstrap";
-import { signup } from "../actions/accounts";
+import { signup } from "../actions/account";
 import fetchStates from "../reducers";
 
 class AuthForm extends Component {
@@ -16,6 +16,7 @@ class AuthForm extends Component {
   };
 
   signup = () => {
+    // this.setState({ buttonClicked: true });
     const { username, password } = this.state;
 
     this.props.signup({ username, password });
