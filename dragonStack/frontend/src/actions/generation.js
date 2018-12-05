@@ -3,6 +3,7 @@ import { BACKEND } from "../config";
 
 export const fetchGeneration = () => dispatch => {
   dispatch({ type: GENERATION.FETCH });
+
   return fetch(`${BACKEND.ADDRESS}/generation`)
     .then(response => response.json())
     .then(json => {
