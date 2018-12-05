@@ -27029,7 +27029,8 @@ var ACCOUNT = {
   FETCH: "ACCOUNT_FETCH",
   FETCH_ERROR: "ACCOUNT_FETCH_ERROR",
   FETCH_SUCCESS: "ACCOUNT_FETCH_SUCCESS",
-  FETCH_LOGOUT_SUCCESS: "ACCOUNT_FETCH_LOGOUT_SUCCESS"
+  FETCH_LOGOUT_SUCCESS: "ACCOUNT_FETCH_LOGOUT_SUCCESS",
+  FETCH_AUTHENTICATED_SUCCESS: "ACCOUNT_FETCH_AUTHENTICATED_SUCCESS"
 };
 exports.ACCOUNT = ACCOUNT;
 },{}],"reducers/fetchStates.js":[function(require,module,exports) {
@@ -27093,6 +27094,13 @@ var account = function account() {
         status: _fetchStates.default.success,
         message: action.message,
         loggedIn: false
+      });
+
+    case _types.ACCOUNT.FETCH_AUTHENTICATED_SUCCESS:
+      return _extends({}, state, {
+        status: _fetchStates.default.success,
+        message: action.message,
+        loggedIn: action.authenticated
       });
 
     default:
@@ -45816,7 +45824,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logout = exports.signup = void 0;
+exports.fetchAuthenticated = exports.logout = exports.login = exports.signup = void 0;
 
 var _types = require("./types");
 
@@ -45876,6 +45884,28 @@ var signup = function signup(_ref2) {
 
 exports.signup = signup;
 
+var login = function login(_ref3) {
+  var username = _ref3.username,
+      password = _ref3.password;
+  return fetchFromAccount({
+    endpoint: "login",
+    options: {
+      method: "POST",
+      body: JSON.stringify({
+        username: username,
+        password: password
+      }),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include"
+    },
+    SUCCESS_TYPE: _types.ACCOUNT.FETCH_SUCCESS
+  });
+};
+
+exports.login = login;
+
 var logout = function logout() {
   return fetchFromAccount({
     endpoint: "logout",
@@ -45887,6 +45917,18 @@ var logout = function logout() {
 };
 
 exports.logout = logout;
+
+var fetchAuthenticated = function fetchAuthenticated() {
+  return fetchFromAccount({
+    endpoint: "authenticated",
+    options: {
+      credentials: "include"
+    },
+    SUCCESS_TYPE: _types.ACCOUNT.FETCH_AUTHENTICATED_SUCCESS
+  });
+};
+
+exports.fetchAuthenticated = fetchAuthenticated;
 },{"./types":"actions/types.js","../config":"config.js"}],"componets/Home.js":[function(require,module,exports) {
 "use strict";
 
@@ -46018,7 +46060,8 @@ function (_Component) {
 
     return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(AuthForm)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
       username: "",
-      password: ""
+      password: "",
+      buttonClicked: false
     }, _this.updateUsername = function (event) {
       _this.setState({
         username: event.target.value
@@ -46028,7 +46071,10 @@ function (_Component) {
         password: event.target.value
       });
     }, _this.signup = function () {
-      // this.setState({ buttonClicked: true });
+      _this.setState({
+        buttonClicked: true
+      });
+
       var _this$state = _this.state,
           username = _this$state.username,
           password = _this$state.password;
@@ -46038,7 +46084,18 @@ function (_Component) {
         password: password
       });
     }, _this.login = function () {
-      console.log("this.state", _this.state);
+      _this.setState({
+        buttonClicked: true
+      });
+
+      var _this$state2 = _this.state,
+          username = _this$state2.username,
+          password = _this$state2.password;
+
+      _this.props.login({
+        username: username,
+        password: password
+      });
     }, _temp));
   }
 
@@ -46064,7 +46121,7 @@ function (_Component) {
   }, {
     key: "Error",
     get: function get() {
-      if (this.props.account.status === _reducers.default.error) {
+      if (this.state.buttonClicked && this.props.account.status === _reducers.default.error) {
         return _react.default.createElement("div", null, this.props.account.message);
       }
     }
@@ -46079,7 +46136,8 @@ var _default = (0, _reactRedux.connect)(function (_ref) {
     account: account
   };
 }, {
-  signup: _account.signup
+  signup: _account.signup,
+  login: _account.login
 })(AuthForm);
 
 exports.default = _default;
@@ -46239,15 +46297,19 @@ var _reducers = _interopRequireDefault(require("./reducers"));
 
 var _Root = _interopRequireDefault(require("./componets/Root"));
 
+var _account = require("./actions/account");
+
 require("./index.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var store = (0, _redux.createStore)(_reducers.default, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), (0, _redux.applyMiddleware)(_reduxThunk.default));
-(0, _reactDom.render)(_react.default.createElement(_reactRedux.Provider, {
-  store: store
-}, _react.default.createElement(_Root.default, null)), document.getElementById("root"));
-},{"react":"../node_modules/react/index.js","redux":"../node_modules/redux/es/redux.js","react-redux":"../node_modules/react-redux/es/index.js","react-dom":"../node_modules/react-dom/index.js","redux-thunk":"../node_modules/redux-thunk/es/index.js","./reducers":"reducers/index.js","./componets/Root":"componets/Root.js","./index.css":"index.css"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+store.dispatch((0, _account.fetchAuthenticated)()).then(function () {
+  (0, _reactDom.render)(_react.default.createElement(_reactRedux.Provider, {
+    store: store
+  }, _react.default.createElement(_Root.default, null)), document.getElementById("root"));
+});
+},{"react":"../node_modules/react/index.js","redux":"../node_modules/redux/es/redux.js","react-redux":"../node_modules/react-redux/es/index.js","react-dom":"../node_modules/react-dom/index.js","redux-thunk":"../node_modules/redux-thunk/es/index.js","./reducers":"reducers/index.js","./componets/Root":"componets/Root.js","./actions/account":"actions/account.js","./index.css":"index.css"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -46274,7 +46336,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51014" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61536" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
