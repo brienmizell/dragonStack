@@ -1,7 +1,13 @@
 import { ACCOUNT } from "./types";
 import { BACKEND } from "../config";
 
-const fetchFromAccount = ({ endpoint, options, SUCCESS_TYPE }) => dispatch => {
+export const fetchFromAccount = ({
+  endpoint,
+  options,
+  FETCH_TYPE,
+  ERROR_TYPE,
+  SUCCESS_TYPE
+}) => dispatch => {
   dispatch({ type: ACCOUNT.FETCH });
 
   return fetch(`${BACKEND.ADDRESS}/account/${endpoint}`, options)
@@ -14,7 +20,7 @@ const fetchFromAccount = ({ endpoint, options, SUCCESS_TYPE }) => dispatch => {
       }
     })
     .catch(error =>
-      dispatch({ type: ACCOUNT.FETCH_ERROR, message: error.message })
+      dispatch({ ERROR_TYPE: ACCOUNT.FETCH_ERROR, message: error.message })
     );
 };
 
@@ -27,6 +33,8 @@ export const signup = ({ username, password }) =>
       headers: { "Content-Type": "application/json" },
       credentials: "include"
     },
+    FETCH_TYPE: ACCOUNT.FETCH,
+    ERROR_TYPE: ACCOUNT.FETCH_ERROR,
     SUCCESS_TYPE: ACCOUNT.FETCH_SUCCESS
   });
 
@@ -39,6 +47,8 @@ export const login = ({ username, password }) =>
       headers: { "Content-Type": "application/json" },
       credentials: "include"
     },
+    FETCH_TYPE: ACCOUNT.FETCH,
+    ERROR_TYPE: ACCOUNT.FETCH_ERROR,
     SUCCESS_TYPE: ACCOUNT.FETCH_SUCCESS
   });
 
@@ -53,5 +63,7 @@ export const fetchAuthenticated = () =>
   fetchFromAccount({
     endpoint: "authenticated",
     options: { credentials: "include" },
+    FETCH_TYPE: ACCOUNT.FETCH,
+    ERROR_TYPE: ACCOUNT.FETCH_ERROR,
     SUCCESS_TYPE: ACCOUNT.FETCH_AUTHENTICATED_SUCCESS
   });
