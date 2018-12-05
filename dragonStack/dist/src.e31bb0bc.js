@@ -27028,7 +27028,8 @@ exports.DRAGON = DRAGON;
 var ACCOUNT = {
   FETCH: "ACCOUNT_FETCH",
   FETCH_ERROR: "ACCOUNT_FETCH_ERROR",
-  FETCH_SUCCESS: "ACCOUNT_FETCH_SUCCESS"
+  FETCH_SUCCESS: "ACCOUNT_FETCH_SUCCESS",
+  FETCH_LOGOUT_SUCCESS: "ACCOUNT_FETCH_LOGOUT_SUCCESS"
 };
 exports.ACCOUNT = ACCOUNT;
 },{}],"reducers/fetchStates.js":[function(require,module,exports) {
@@ -27085,6 +27086,13 @@ var account = function account() {
         status: _fetchStates.default.success,
         message: action.message,
         loggedIn: true
+      });
+
+    case _types.ACCOUNT.FETCH_LOGOUT_SUCCESS:
+      return _extends({}, state, {
+        status: _fetchStates.default.success,
+        message: action.message,
+        loggedIn: false
       });
 
     default:
