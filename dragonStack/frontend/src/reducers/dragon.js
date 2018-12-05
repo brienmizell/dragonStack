@@ -21,3 +21,5 @@ const dragon = (state = DEFAULT_DRAGON, action) => {
       return state;
   }
 };
+
+export default dragon;
