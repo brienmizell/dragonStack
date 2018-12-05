@@ -27205,12 +27205,11 @@ var _generation = _interopRequireDefault(require("./generation"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var _default = (0, _redux.combineReducers)(_defineProperty({
+var _default = (0, _redux.combineReducers)({
   generation: _generation.default,
-  dragon: _dragon.default
-}, "generation", _generation.default));
+  dragon: _dragon.default,
+  account: _account.default
+});
 
 exports.default = _default;
 },{"redux":"../node_modules/redux/es/redux.js","./account":"reducers/account.js","./dragon":"reducers/dragon.js","./generation":"reducers/generation.js"}],"config.js":[function(require,module,exports) {
