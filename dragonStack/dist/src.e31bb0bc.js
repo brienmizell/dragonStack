@@ -31454,7 +31454,7 @@ exports.default = createBrowserHistory;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ACCOUNT_DRAGONS = exports.ACCOUNT = exports.DRAGON = exports.GENERATION = void 0;
+exports.ACCOUNT_INFO = exports.ACCOUNT_DRAGONS = exports.ACCOUNT = exports.DRAGON = exports.GENERATION = void 0;
 var GENERATION = {
   FETCH: "GENERATION_FETCH",
   FETCH_ERROR: "GENERATION_FETCH_ERROR",
@@ -31481,6 +31481,12 @@ var ACCOUNT_DRAGONS = {
   FETCH_SUCCESS: "ACCOUNT_DRAGON_FETCH_SUCCESS"
 };
 exports.ACCOUNT_DRAGONS = ACCOUNT_DRAGONS;
+var ACCOUNT_INFO = {
+  FETCH: "ACCOUNT_INFO_FETCH",
+  FETCH_ERROR: "ACCOUNT_INFO_FETCH_ERROR",
+  FETCH_SUCCESS: "ACCOUNT_INFO_FETCH_SUCCESS"
+};
+exports.ACCOUNT_INFO = ACCOUNT_INFO;
 },{}],"reducers/fetchStates.js":[function(require,module,exports) {
 "use strict";
 
@@ -31709,6 +31715,51 @@ var accountDragons = function accountDragons() {
 
 var _default = accountDragons;
 exports.default = _default;
+},{"../actions/types":"actions/types.js","./fetchStates":"reducers/fetchStates.js"}],"reducers/accountInfo.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _types = require("../actions/types");
+
+var _fetchStates = _interopRequireDefault(require("./fetchStates"));
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var accountInfo = function accountInfo() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.tupe) {
+    case _types.ACCOUNT_INFO.FETCH:
+      return _extends({}, state, {
+        status: _fetchStates.default.fetching
+      });
+
+    case _types.ACCOUNT_INFO.FETCH_ERROR:
+      return _extends({}, state, {
+        status: _fetchStates.default.error,
+        message: action.message
+      });
+
+    case _types.ACCOUNT_INFO.FETCH_SUCCESS:
+      return _extends({}, state, {
+        status: _fetchStates.default.success,
+        message: action.message
+      }, action.info);
+
+    default:
+      return state;
+  }
+};
+
+var _default = accountInfo;
+exports.default = _default;
 },{"../actions/types":"actions/types.js","./fetchStates":"reducers/fetchStates.js"}],"reducers/index.js":[function(require,module,exports) {
 "use strict";
 
@@ -31727,17 +31778,20 @@ var _generation = _interopRequireDefault(require("./generation"));
 
 var _accountDragons = _interopRequireDefault(require("./accountDragons"));
 
+var _accountInfo = _interopRequireDefault(require("./accountInfo"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _default = (0, _redux.combineReducers)({
   generation: _generation.default,
   dragon: _dragon.default,
   account: _account.default,
-  accountDragons: _accountDragons.default
+  accountDragons: _accountDragons.default,
+  accountInfo: _accountInfo.default
 });
 
 exports.default = _default;
-},{"redux":"../node_modules/redux/es/redux.js","./account":"reducers/account.js","./dragon":"reducers/dragon.js","./generation":"reducers/generation.js","./accountDragons":"reducers/accountDragons.js"}],"../node_modules/core-js/library/modules/_global.js":[function(require,module,exports) {
+},{"redux":"../node_modules/redux/es/redux.js","./account":"reducers/account.js","./dragon":"reducers/dragon.js","./generation":"reducers/generation.js","./accountDragons":"reducers/accountDragons.js","./accountInfo":"reducers/accountInfo.js"}],"../node_modules/core-js/library/modules/_global.js":[function(require,module,exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
@@ -50429,7 +50483,11 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _reactBootstrap = require("react-bootstrap");
+
 var _DragonAvatar = _interopRequireDefault(require("./DragonAvatar"));
+
+var _config = require("../config");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50459,17 +50517,76 @@ function (_Component) {
   _inherits(AccountDragonRow, _Component);
 
   function AccountDragonRow() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    var _temp;
+
     _classCallCheck(this, AccountDragonRow);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(AccountDragonRow).apply(this, arguments));
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(AccountDragonRow)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
+      nickname: _this.props.dragon.nickname,
+      edit: false
+    }, _this.updateNickname = function (event) {
+      _this.setState({
+        nickname: event.target.value
+      });
+    }, _this.toggleEdit = function () {
+      _this.setState({
+        edit: !_this.state.edit
+      });
+    }, _this.save = function () {
+      fetch("".concat(_config.BACKEND.ADDRESS, "/dragon/update"), {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          dragonId: _this.props.dragon.dragonId,
+          nickname: _this.state.nickname
+        })
+      }).then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        if (json.type === "error") {
+          alert(json.message);
+        } else {
+          _this.toggleEdit();
+        }
+      });
+    }, _temp));
   }
 
   _createClass(AccountDragonRow, [{
     key: "render",
     value: function render() {
-      return _react.default.createElement("div", null, _react.default.createElement("div", null, this.props.dragon.nickname), _react.default.createElement("br", null), _react.default.createElement(_DragonAvatar.default, {
+      return _react.default.createElement("div", null, _react.default.createElement("div", null, this.props.dragon.nickname), _react.default.createElement("input", {
+        type: "text",
+        value: this.state.nickname,
+        onChange: this.updateNickname,
+        disabled: !this.state.edit
+      }), _react.default.createElement("br", null), _react.default.createElement(_DragonAvatar.default, {
         dragon: this.props.dragon
-      }));
+      }), this.state.edit ? this.SaveButton : this.EditButton);
+    }
+  }, {
+    key: "SaveButton",
+    get: function get() {
+      return _react.default.createElement(_reactBootstrap.Button, {
+        onClick: this.save
+      }, "Save");
+    }
+  }, {
+    key: "EditButton",
+    get: function get() {
+      return _react.default.createElement(_reactBootstrap.Button, {
+        onClick: this.toggleEdit
+      }, "Edit");
     }
   }]);
 
@@ -50478,7 +50595,7 @@ function (_Component) {
 
 var _default = AccountDragonRow;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./DragonAvatar":"components/DragonAvatar.js"}],"components/AccountDragons.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-bootstrap":"../node_modules/react-bootstrap/es/index.js","./DragonAvatar":"components/DragonAvatar.js","../config":"config.js"}],"components/AccountDragons.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -50922,7 +51039,7 @@ module.hot.accept(reloadCSS);
 },{"_css_loader":"../../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
-var _react = _interopRequireWildcard(require("react"));
+var _react = _interopRequireDefault(require("react"));
 
 var _redux = require("redux");
 
@@ -50948,53 +51065,25 @@ require("./index.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
 var history = (0, _createBrowserHistory.default)();
 var store = (0, _redux.createStore)(_reducers.default, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), (0, _redux.applyMiddleware)(_reduxThunk.default));
 
-var RedirectToAccountDragons =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(RedirectToAccountDragons, _Component);
-
-  function RedirectToAccountDragons() {
-    _classCallCheck(this, RedirectToAccountDragons);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(RedirectToAccountDragons).apply(this, arguments));
+var AuthRoute = function AuthRoute(props) {
+  if (!store.getState().account.loggedIn) {
+    return _react.default.createElement(_reactRouterDom.Redirect, {
+      to: {
+        pathname: "/"
+      }
+    });
   }
 
-  _createClass(RedirectToAccountDragons, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement(_reactRouterDom.Redirect, {
-        to: {
-          pathname: "/account-dragons"
-        }
-      });
-    }
-  }]);
-
-  return RedirectToAccountDragons;
-}(_react.Component);
+  var component = props.component,
+      path = props.path;
+  return _react.default.createElement(_reactRouterDom.Route, {
+    path: path,
+    component: component
+  });
+};
 
 store.dispatch((0, _account.fetchAuthenticated)()).then(function () {
   (0, _reactDom.render)(_react.default.createElement(_reactRedux.Provider, {
@@ -51005,12 +51094,9 @@ store.dispatch((0, _account.fetchAuthenticated)()).then(function () {
     exact: true,
     path: "/",
     component: _Root.default
-  }), _react.default.createElement(_reactRouterDom.Route, {
+  }), _react.default.createElement(AuthRoute, {
     path: "/account-dragons",
     component: _AccountDragons.default
-  }), _react.default.createElement(_reactRouterDom.Route, {
-    path: "/redirect-to-account-dragons",
-    componet: RedirectToAccountDragons
   })))), document.getElementById("root"));
 });
 },{"react":"../node_modules/react/index.js","redux":"../node_modules/redux/es/redux.js","react-redux":"../node_modules/react-redux/es/index.js","react-router-dom":"../node_modules/react-router-dom/es/index.js","react-dom":"../node_modules/react-dom/index.js","redux-thunk":"../node_modules/redux-thunk/es/index.js","history/createBrowserHistory":"../node_modules/history/createBrowserHistory.js","./reducers":"reducers/index.js","./components/Root":"components/Root.js","./components/AccountDragons":"components/AccountDragons.js","./actions/account":"actions/account.js","./index.css":"index.css"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
