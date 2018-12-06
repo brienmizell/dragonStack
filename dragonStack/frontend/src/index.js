@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import { Router, Switch, Route, Redirect } from "react-router-dom";
@@ -19,11 +19,15 @@ const store = createStore(
   applyMiddleware(thunk)
 );
 
-class RedirectToAccountDragons extends Component {
-  render() {
-    return <Redirect to={{ pathname: "/account-dragons" }} />;
+const AuthRoute = props => {
+  if (!store.getState().account.loggedIn) {
+    return <Redirect to={{ pathname: "/" }} />;
   }
-}
+
+  const { component, path } = props;
+
+  return <Route path={path} component={component} />;
+};
 
 store.dispatch(fetchAuthenticated()).then(() => {
   render(
@@ -31,11 +35,7 @@ store.dispatch(fetchAuthenticated()).then(() => {
       <Router history={history}>
         <Switch>
           <Route exact path="/" component={Root} />
-          <Route path="/account-dragons" component={AccountDragons} />
-          <Route
-            path="/redirect-to-account-dragons"
-            componet={RedirectToAccountDragons}
-          />
+          <AuthRoute path="/account-dragons" component={AccountDragons} />
         </Switch>
       </Router>
     </Provider>,
