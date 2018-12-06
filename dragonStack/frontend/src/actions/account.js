@@ -8,19 +8,22 @@ export const fetchFromAccount = ({
   ERROR_TYPE,
   SUCCESS_TYPE
 }) => dispatch => {
-  dispatch({ type: ACCOUNT.FETCH });
+  dispatch({ type: FETCH_TYPE });
 
   return fetch(`${BACKEND.ADDRESS}/account/${endpoint}`, options)
     .then(response => response.json())
     .then(json => {
       if (json.type === "error") {
-        dispatch({ type: ACCOUNT.FETCH_ERROR, message: json.message });
+        dispatch({ type: ERROR_TYPE, message: json.message });
       } else {
         dispatch({ type: SUCCESS_TYPE, ...json });
       }
     })
     .catch(error =>
-      dispatch({ ERROR_TYPE: ACCOUNT.FETCH_ERROR, message: error.message })
+      dispatch({
+        type: ERROR_TYPE,
+        message: error.message
+      })
     );
 };
 
@@ -56,6 +59,8 @@ export const logout = () =>
   fetchFromAccount({
     endpoint: "logout",
     options: { credentials: "include" },
+    FETCH_TYPE: ACCOUNT.FETCH,
+    ERROR_TYPE: ACCOUNT.FETCH_ERROR,
     SUCCESS_TYPE: ACCOUNT.FETCH_LOGOUT_SUCCESS
   });
 
