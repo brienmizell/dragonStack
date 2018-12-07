@@ -2,7 +2,7 @@ import { ACCOUNT_INFO } from "../actions/types";
 import fetchStates from "./fetchStates";
 
 const accountInfo = (state = {}, action) => {
-  switch (action.tupe) {
+  switch (action.type) {
     case ACCOUNT_INFO.FETCH:
       return { ...state, status: fetchStates.fetching };
     case ACCOUNT_INFO.FETCH_ERROR:
