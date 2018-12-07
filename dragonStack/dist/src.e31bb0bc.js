@@ -31454,7 +31454,7 @@ exports.default = createBrowserHistory;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ACCOUNT_INFO = exports.ACCOUNT_DRAGONS = exports.ACCOUNT = exports.DRAGON = exports.GENERATION = void 0;
+exports.PUBLIC_DRAGONS = exports.ACCOUNT_INFO = exports.ACCOUNT_DRAGONS = exports.ACCOUNT = exports.DRAGON = exports.GENERATION = void 0;
 var GENERATION = {
   FETCH: "GENERATION_FETCH",
   FETCH_ERROR: "GENERATION_FETCH_ERROR",
@@ -31487,6 +31487,12 @@ var ACCOUNT_INFO = {
   FETCH_SUCCESS: "ACCOUNT_INFO_FETCH_SUCCESS"
 };
 exports.ACCOUNT_INFO = ACCOUNT_INFO;
+var PUBLIC_DRAGONS = {
+  FETCH: "PUBLIC_DRAGONS_FETCH",
+  FETCH_ERROR: "PUBLIC_DRAGONS_FETCH_ERROR",
+  FETCH_SUCCESS: "PUBLIC_DRAGONS_FETCH_SUCCESS"
+};
+exports.PUBLIC_DRAGONS = PUBLIC_DRAGONS;
 },{}],"reducers/fetchStates.js":[function(require,module,exports) {
 "use strict";
 
@@ -31760,7 +31766,60 @@ var accountInfo = function accountInfo() {
 
 var _default = accountInfo;
 exports.default = _default;
-},{"../actions/types":"actions/types.js","./fetchStates":"reducers/fetchStates.js"}],"reducers/index.js":[function(require,module,exports) {
+},{"../actions/types":"actions/types.js","./fetchStates":"reducers/fetchStates.js"}],"../../node_modules/parcel-bundler/src/builtins/_empty.js":[function(require,module,exports) {
+
+},{}],"reducers/publicDragons.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _types = require("../actions/types");
+
+var _fetchStates = _interopRequireDefault(require("./fetchStates"));
+
+var _fs = require("fs");
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DEFAULT_PUBLIC_DRAGONS = {
+  dragons: []
+};
+
+var publicDragons = function publicDragons() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : DEFAULT_PUBLIC_DRAGONS;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case _types.PUBLIC_DRAGONS.FETCH:
+      return _extends({}, state, {
+        status: _fetchStates.default.fetching
+      });
+
+    case _types.PUBLIC_DRAGONS.FETCH_ERROR:
+      return _extends({}, state, {
+        status: _fetchStates.default.error,
+        message: action.message
+      });
+
+    case _types.PUBLIC_DRAGONS.FETCH:
+      return _extends({}, state, {
+        status: _fetchStates.default.success,
+        dragons: action.dragons
+      });
+
+    default:
+      return state;
+  }
+};
+
+var _default = publicDragons;
+exports.default = _default;
+},{"../actions/types":"actions/types.js","./fetchStates":"reducers/fetchStates.js","fs":"../../node_modules/parcel-bundler/src/builtins/_empty.js"}],"reducers/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31780,6 +31839,8 @@ var _accountDragons = _interopRequireDefault(require("./accountDragons"));
 
 var _accountInfo = _interopRequireDefault(require("./accountInfo"));
 
+var _publicDragons = _interopRequireDefault(require("./publicDragons"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var _default = (0, _redux.combineReducers)({
@@ -31787,11 +31848,12 @@ var _default = (0, _redux.combineReducers)({
   dragon: _dragon.default,
   account: _account.default,
   accountDragons: _accountDragons.default,
-  accountInfo: _accountInfo.default
+  accountInfo: _accountInfo.default,
+  publicDragons: _publicDragons.default
 });
 
 exports.default = _default;
-},{"redux":"../node_modules/redux/es/redux.js","./account":"reducers/account.js","./dragon":"reducers/dragon.js","./generation":"reducers/generation.js","./accountDragons":"reducers/accountDragons.js","./accountInfo":"reducers/accountInfo.js"}],"../node_modules/core-js/library/modules/_global.js":[function(require,module,exports) {
+},{"redux":"../node_modules/redux/es/redux.js","./account":"reducers/account.js","./dragon":"reducers/dragon.js","./generation":"reducers/generation.js","./accountDragons":"reducers/accountDragons.js","./accountInfo":"reducers/accountInfo.js","./publicDragons":"reducers/publicDragons.js"}],"../node_modules/core-js/library/modules/_global.js":[function(require,module,exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
@@ -50913,10 +50975,20 @@ function (_Component) {
 
     return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(AccountDragonRow)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
       nickname: _this.props.dragon.nickname,
+      isPublic: _this.props.dragon.isPublic,
+      saleValue: _this.props.dragon.saleValue,
       edit: false
     }, _this.updateNickname = function (event) {
       _this.setState({
         nickname: event.target.value
+      });
+    }, _this.updateSaleValue = function (event) {
+      _this.setState({
+        saleValue: event.target.value
+      });
+    }, _this.updateIsPublic = function (event) {
+      _this.setState({
+        isPublic: event.target.checked
       });
     }, _this.toggleEdit = function () {
       _this.setState({
@@ -50930,7 +51002,9 @@ function (_Component) {
         },
         body: JSON.stringify({
           dragonId: _this.props.dragon.dragonId,
-          nickname: _this.state.nickname
+          nickname: _this.state.nickname,
+          isPublic: _this.state.isPublic,
+          saleValue: _this.state.saleValue
         })
       }).then(function (response) {
         return response.json();
@@ -50954,7 +51028,17 @@ function (_Component) {
         disabled: !this.state.edit
       }), _react.default.createElement("br", null), _react.default.createElement(_DragonAvatar.default, {
         dragon: this.props.dragon
-      }), this.state.edit ? this.SaveButton : this.EditButton);
+      }), _react.default.createElement("div", null, _react.default.createElement("span", null, "Sale Value:", " ", _react.default.createElement("input", {
+        type: "number",
+        disabled: !this.state.edit,
+        value: this.state.saleValue,
+        onChange: this.updateSaleValue
+      }), " "), _react.default.createElement("span", null, "Public:", " ", _react.default.createElement("input", {
+        type: "checkbox",
+        disabled: !this.state.edit,
+        checked: this.state.isPublic,
+        onChange: this.updateIsPublic
+      })), this.state.edit ? this.SaveButton : this.EditButton), _react.default.createElement("div", null));
     }
   }, {
     key: "SaveButton",
@@ -51223,7 +51307,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60224" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56912" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
