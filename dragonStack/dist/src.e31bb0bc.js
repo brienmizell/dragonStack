@@ -50994,6 +50994,7 @@ function (_Component) {
       nickname: _this.props.dragon.nickname,
       isPublic: _this.props.dragon.isPublic,
       saleValue: _this.props.dragon.saleValue,
+      sireValue: _this.props.dragon.sireValue,
       edit: false
     }, _this.updateNickname = function (event) {
       _this.setState({
@@ -51002,6 +51003,10 @@ function (_Component) {
     }, _this.updateSaleValue = function (event) {
       _this.setState({
         saleValue: event.target.value
+      });
+    }, _this.updateSireValue = function (event) {
+      _this.setState({
+        sireValue: event.target.value
       });
     }, _this.updateIsPublic = function (event) {
       _this.setState({
@@ -51021,7 +51026,8 @@ function (_Component) {
           dragonId: _this.props.dragon.dragonId,
           nickname: _this.state.nickname,
           isPublic: _this.state.isPublic,
-          saleValue: _this.state.saleValue
+          saleValue: _this.state.saleValue,
+          sireValue: _this.state.sireValue
         })
       }).then(function (response) {
         return response.json();
@@ -51049,8 +51055,15 @@ function (_Component) {
         type: "number",
         disabled: !this.state.edit,
         value: this.state.saleValue,
-        onChange: this.updateSaleValue
-      }), " "), _react.default.createElement("span", null, "Public:", " ", _react.default.createElement("input", {
+        onChange: this.updateSaleValue,
+        className: "account-dragon-row-input"
+      })), " ", _react.default.createElement("span", null, "SireValue:", " ", _react.default.createElement("input", {
+        type: "number",
+        disabled: !this.state.edit,
+        value: this.state.sireValue,
+        onChange: this.updateSireValue,
+        className: "account-dragon-row-input"
+      })), _react.default.createElement("span", null, "Public:", " ", _react.default.createElement("input", {
         type: "checkbox",
         disabled: !this.state.edit,
         checked: this.state.isPublic,
@@ -51559,7 +51572,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62587" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55032" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
