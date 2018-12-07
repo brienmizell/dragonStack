@@ -8,6 +8,7 @@ class AccountDragonRow extends Component {
     nickname: this.props.dragon.nickname,
     isPublic: this.props.dragon.isPublic,
     saleValue: this.props.dragon.saleValue,
+    sireValue: this.props.dragon.sireValue,
 
     edit: false
   };
@@ -19,6 +20,11 @@ class AccountDragonRow extends Component {
   updateSaleValue = event => {
     this.setState({ saleValue: event.target.value });
   };
+
+  updateSireValue = event => {
+    this.setState({ sireValue: event.target.value });
+  };
+
   updateIsPublic = event => {
     this.setState({ isPublic: event.target.checked });
   };
@@ -35,7 +41,8 @@ class AccountDragonRow extends Component {
         dragonId: this.props.dragon.dragonId,
         nickname: this.state.nickname,
         isPublic: this.state.isPublic,
-        saleValue: this.state.saleValue
+        saleValue: this.state.saleValue,
+        sireValue: this.state.sireValue
       })
     })
       .then(response => response.json())
@@ -76,7 +83,18 @@ class AccountDragonRow extends Component {
               disabled={!this.state.edit}
               value={this.state.saleValue}
               onChange={this.updateSaleValue}
-            />{" "}
+              className="account-dragon-row-input"
+            />
+          </span>{" "}
+          <span>
+            SireValue:{" "}
+            <input
+              type="number"
+              disabled={!this.state.edit}
+              value={this.state.sireValue}
+              onChange={this.updateSireValue}
+              className="account-dragon-row-input"
+            />
           </span>
           <span>
             Public:{" "}
