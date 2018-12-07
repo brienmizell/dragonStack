@@ -15,7 +15,7 @@ router.get("/new", (req, res, next) => {
     .then(({ account }) => {
       accountId = account.id;
 
-      dragon = req.app.locals.engine.generation.newDragon();
+      dragon = req.app.locals.engine.generation.newDragon({ accountId });
 
       return DragonTable.storeDragon(dragon);
     })
@@ -42,7 +42,7 @@ router.put("/update", (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.get("./public-dragons", (req, res, next) => {
+router.get("/public-dragons", (req, res, next) => {
   getPublicDragons()
     .then(({ dragons }) => res.json({ dragons }))
     .catch(error => next(error));
@@ -65,7 +65,7 @@ router.post("/buy", (req, res, next) => {
 
       return authenticatedAccount({ sessionString: req.cookies.sessionString });
     })
-    .then((account, authenticated) => {
+    .then(({ account, authenticated }) => {
       if (!authenticated) {
         throw new Error("Unauthenticated");
       }

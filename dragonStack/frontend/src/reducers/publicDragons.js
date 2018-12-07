@@ -10,7 +10,7 @@ const publicDragons = (state = DEFAULT_PUBLIC_DRAGONS, action) => {
       return { ...state, status: fetchStates.fetching };
     case PUBLIC_DRAGONS.FETCH_ERROR:
       return { ...state, status: fetchStates.error, message: action.message };
-    case PUBLIC_DRAGONS.FETCH:
+    case PUBLIC_DRAGONS.FETCH_SUCCESS:
       return { ...state, status: fetchStates.success, dragons: action.dragons };
     default:
       return state;

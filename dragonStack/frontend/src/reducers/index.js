@@ -7,9 +7,9 @@ import accountInfo from "./accountInfo";
 import publicDragons from "./publicDragons";
 
 export default combineReducers({
-  generation,
-  dragon,
   account,
+  dragon,
+  generation,
   accountDragons,
   accountInfo,
   publicDragons
