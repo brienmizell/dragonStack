@@ -52,7 +52,8 @@ class AccountDragonRow extends Component {
         } else {
           this.toggleEdit();
         }
-      });
+      })
+      .catch(error => alert(error.message));
   };
 
   get SaveButton() {

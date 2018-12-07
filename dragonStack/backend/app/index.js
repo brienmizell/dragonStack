@@ -20,7 +20,7 @@ app.use("/account", accountRouter);
 app.use("/dragon", dragonRouter);
 app.use("/generation", generationRouter);
 
-app.use((err, rec, res, next) => {
+app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
 
   res.status(statusCode).json({

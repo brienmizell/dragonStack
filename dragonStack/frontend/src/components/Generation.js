@@ -16,15 +16,6 @@ class Generation extends Component {
     clearTimeout(this.timer);
   }
 
-  fetchGeneration = () => {
-    fetch("http://localhost:3000/generation")
-      .then(response => response.json())
-      .then(json => {
-        this.props.dispatchGeneration(json.generation);
-      })
-      .catch(error => console.error("error", error));
-  };
-
   fetchNextGeneration = () => {
     this.props.fetchGeneration();
 

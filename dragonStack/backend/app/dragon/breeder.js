@@ -28,11 +28,11 @@ class Breeder {
   }
 
   // Two incoming traits: matronTrait and patronTrait
-  // The matronTrait and patronTrait sting values are encoded.
+  // The matronTrait and patronTrait string values are encoded.
   // Both traits will have their characters summed.
   // Get a range by adding both character sums.
-  // Generate a random number in that range.
-  // If the number is less than the matron's character sun, pick matron.
+  // Generate a random number, in that range.
+  // If the number is less than the matron's character sum, pick matron.
   // Else, pick patron.
   static pickTrait({ matronTrait, patronTrait }) {
     if (matronTrait === patronTrait) return matronTrait;
