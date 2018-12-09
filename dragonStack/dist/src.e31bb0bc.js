@@ -50838,7 +50838,7 @@ var _reactBootstrap = require("react-bootstrap");
 
 var _account = require("../actions/account");
 
-var _reducers = _interopRequireDefault(require("../reducers"));
+var _fetchStates = _interopRequireDefault(require("../reducers/fetchStates"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50943,7 +50943,7 @@ function (_Component) {
   }, {
     key: "Error",
     get: function get() {
-      if (this.state.buttonClicked && this.props.account.status === _reducers.default.error) {
+      if (this.state.buttonClicked && this.props.account.status === _fetchStates.default.error) {
         return _react.default.createElement("div", null, this.props.account.message);
       }
     }
@@ -50963,7 +50963,7 @@ var _default = (0, _reactRedux.connect)(function (_ref) {
 })(AuthForm);
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-bootstrap":"../node_modules/react-bootstrap/es/index.js","../actions/account":"actions/account.js","../reducers":"reducers/index.js"}],"components/Root.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-bootstrap":"../node_modules/react-bootstrap/es/index.js","../actions/account":"actions/account.js","../reducers/fetchStates":"reducers/fetchStates.js"}],"components/Root.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -51826,7 +51826,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56696" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65303" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

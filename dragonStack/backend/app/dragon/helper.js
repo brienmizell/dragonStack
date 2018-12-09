@@ -8,9 +8,9 @@ const getDragonWithTraits = ({ dragonId }) => {
     new Promise((resolve, reject) => {
       pool.query(
         `SELECT "traitType", "traitValue"
-                    FROM trait
-                    INNER JOIN dragonTrait ON trait.id = dragonTrait."traitId"
-                    WHERE dragonTrait."dragonId" = $1`,
+         FROM trait
+         INNER JOIN dragonTrait ON trait.id = dragonTrait."traitId"
+         WHERE dragonTrait."dragonId" = $1`,
         [dragonId],
         (error, response) => {
           if (error) return reject(error);
@@ -46,9 +46,5 @@ const getPublicDragons = () => {
     );
   });
 };
-
-// getDragonWithTraits({ dragonId: 1 })
-// 	.then((dragon) => console.log('dragon', dragon))
-// 	.catch((error) => console.error('error', error));
 
 module.exports = { getDragonWithTraits, getPublicDragons };

@@ -14,8 +14,8 @@ class DragonTable {
 
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO dragon(birthdate, nickname, "generationId", "isPublic", "saleValue", "sireValue") 
-                	VALUES($1, $2, $3, $4, $5, $6) RETURNING id`,
+        `INSERT INTO dragon(birthdate, nickname, "generationId", "isPublic", "saleValue", "sireValue")
+         VALUES($1, $2, $3, $4, $5, $6) RETURNING id`,
         [birthdate, nickname, generationId, isPublic, saleValue, sireValue],
         (error, response) => {
           if (error) return reject(error);
@@ -33,8 +33,6 @@ class DragonTable {
           )
             .then(() => resolve({ dragonId }))
             .catch(error => reject(error));
-
-          resolve({ dragonId });
         }
       );
     });
@@ -43,9 +41,9 @@ class DragonTable {
   static getDragon({ dragonId }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `SELECT birthdate, nickname, "generationId", "isPublic", "saleValue", "sireValue"
-				FROM dragon
-				WHERE dragon.id = $1`,
+        `SELECT birthdate, nickname, "generationId", "isPublic", "saleValue", "sireValue", "sireValue"
+        FROM dragon
+        WHERE dragon.id = $1`,
         [dragonId],
         (error, response) => {
           if (error) return reject(error);
@@ -65,13 +63,15 @@ class DragonTable {
       ([settingKey, settingValue]) => {
         if (settingValue !== undefined) {
           return new Promise((resolve, reject) => {
-            pool.query(`UPDATE dragon SET "${settingKey}" = $1 WHERE id = $2`),
+            pool.query(
+              `UPDATE dragon SET "${settingKey}" = $1 WHERE id = $2`,
               [settingValue, dragonId],
               (error, response) => {
                 if (error) return reject(error);
 
                 resolve();
-              };
+              }
+            );
           });
         }
       }
