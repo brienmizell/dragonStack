@@ -5,7 +5,8 @@ class AccountTable {
   static storeAccount({ usernameHash, passwordHash }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO account("usernameHash", "passwordHash", balance) VALUES($1, $2, $3)`,
+        `INSERT INTO account("usernameHash", "passwordHash", balance)
+         VALUES($1, $2, $3)`,
         [usernameHash, passwordHash, STARTING_BALANCE],
         (error, response) => {
           if (error) return reject(error);
@@ -19,7 +20,8 @@ class AccountTable {
   static getAccount({ usernameHash }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `SELECT id, "passwordHash", "sessionId", balance FROM account WHERE "usernameHash" = $1`,
+        `SELECT id, "passwordHash", "sessionId", balance FROM account
+         WHERE "usernameHash" = $1`,
         [usernameHash],
         (error, response) => {
           if (error) return reject(error);
@@ -43,18 +45,6 @@ class AccountTable {
       );
     });
   }
-
-  // static updateDragon({ dragonId, nickname }) {
-  //   return new Promise((resolve, reject) => {
-  //     pool.query("UPDATE dragon SET nickname = $1 WHERE id = $2"),
-  //       [nickname, dragonId],
-  //       (error, response) => {
-  //         if (error) return reject(error);
-
-  //         resolve();
-  //       };
-  //   });
-  // }
 
   static updateBalance({ accountId, value }) {
     return new Promise((resolve, reject) => {
