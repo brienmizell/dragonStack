@@ -6,6 +6,7 @@ const DEFAULT_PROPERTIES = {
   generationId: undefined,
   isPublic: false,
   saleValue: 0,
+  sireValue: 0,
   get birthdate() {
     return new Date();
   },
@@ -18,7 +19,8 @@ const DEFAULT_PROPERTIES = {
 
       const traitValue =
         traitValues[Math.floor(Math.random() * traitValues.length)];
-      traits.push({ traitType: traitType, traitValue: traitValue });
+
+      traits.push({ traitType, traitValue });
     });
 
     return traits;

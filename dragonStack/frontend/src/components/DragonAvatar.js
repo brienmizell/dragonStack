@@ -71,4 +71,5 @@ class DragonAvatar extends Component {
     );
   }
 }
+
 export default DragonAvatar;

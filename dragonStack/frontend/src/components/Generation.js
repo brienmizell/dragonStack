@@ -6,7 +6,7 @@ import fetchStates from "../reducers/fetchStates";
 const MINIMUM_DELAY = 3000;
 
 class Generation extends Component {
-  timer = null; //object that has not been set yet
+  timer = null;
 
   componentDidMount() {
     this.fetchNextGeneration();
@@ -35,10 +35,6 @@ class Generation extends Component {
 
     const { generation } = this.props;
 
-    // if (generation.status === fetchStates.fetching) {
-    //   return <div>...</div>;
-    // }
-
     if (generation.status === fetchStates.error) {
       return <div>{generation.message}</div>;
     }
@@ -55,9 +51,7 @@ class Generation extends Component {
 const mapStateToProps = state => {
   const generation = state.generation;
 
-  return {
-    generation
-  };
+  return { generation };
 };
 
 const componentConnector = connect(
@@ -66,4 +60,3 @@ const componentConnector = connect(
 );
 
 export default componentConnector(Generation);
-//takes entire component class as its argument above, wraps around it

@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const DragonTable = require("../dragon/table");
-const AccountDragonTable = require("./helper");
+const AccountDragonTable = require("../accountDragon/table");
 const AccountTable = require("../account/table");
 const Breeder = require("../dragon/breeder");
 const { authenticatedAccount } = require("./helper");
@@ -21,6 +21,8 @@ router.get("/new", (req, res, next) => {
     })
     .then(({ dragonId }) => {
       dragon.dragonId = dragonId;
+
+      console.log("resolved dragonId", dragonId);
 
       return AccountDragonTable.storeAccountDragon({ accountId, dragonId });
     })
@@ -50,7 +52,6 @@ router.get("/public-dragons", (req, res, next) => {
 
 router.post("/buy", (req, res, next) => {
   const { dragonId, saleValue } = req.body;
-
   let buyerId;
 
   DragonTable.getDragon({ dragonId })
@@ -104,7 +105,8 @@ router.post("/buy", (req, res, next) => {
         })
       ]);
     })
-    .then((() => res.json({ message: "success" })).catch(error => next(error)));
+    .then(() => res.json({ message: "success!" }))
+    .catch(error => next(error));
 });
 
 router.post("/mate", (req, res, next) => {
@@ -172,10 +174,10 @@ router.post("/mate", (req, res, next) => {
           dragonId,
           accountId: matronAccountId
         })
-      ]);
-    })
-    .then(() => res.json({ message: "Success" }))
-    .catch(error => next(error));
+      ])
+        .then(() => res.json({ message: "success!" }))
+        .catch(error => next(error));
+    });
 });
 
 module.exports = router;

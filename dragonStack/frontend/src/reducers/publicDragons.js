@@ -1,6 +1,5 @@
 import { PUBLIC_DRAGONS } from "../actions/types";
 import fetchStates from "./fetchStates";
-import { access } from "fs";
 
 const DEFAULT_PUBLIC_DRAGONS = { dragons: [] };
 

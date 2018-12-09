@@ -8,11 +8,7 @@ const account = (state = DEFAULT_ACCOUNT, action) => {
     case ACCOUNT.FETCH:
       return { ...state, status: fetchStates.fetching };
     case ACCOUNT.FETCH_ERROR:
-      return {
-        ...state,
-        status: fetchStates.error,
-        message: action.message
-      };
+      return { ...state, status: fetchStates.error, message: action.message };
     case ACCOUNT.FETCH_SUCCESS:
       return {
         ...state,

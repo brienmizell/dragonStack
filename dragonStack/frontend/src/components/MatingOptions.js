@@ -27,7 +27,7 @@ class MatingOptions extends Component {
     return (
       <div>
         <h4>Pick one of your dragons to mate with:</h4>
-        {this.props.accountDragons.dragon.map(dragon => {
+        {this.props.accountDragons.dragons.map(dragon => {
           const { dragonId, generationId, nickname } = dragon;
 
           return (
@@ -39,7 +39,7 @@ class MatingOptions extends Component {
                 })}
               >
                 G{generationId}.I{dragonId}. {nickname}
-              </Button>
+              </Button>{" "}
             </span>
           );
         })}
