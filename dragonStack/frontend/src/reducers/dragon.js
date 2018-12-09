@@ -6,7 +6,7 @@ const DEFAULT_DRAGON = {
   dragonId: "",
   nickname: "",
   birthdate: "",
-  traits: ""
+  traits: []
 };
 
 const dragon = (state = DEFAULT_DRAGON, action) => {

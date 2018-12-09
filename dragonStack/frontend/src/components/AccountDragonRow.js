@@ -9,7 +9,6 @@ class AccountDragonRow extends Component {
     isPublic: this.props.dragon.isPublic,
     saleValue: this.props.dragon.saleValue,
     sireValue: this.props.dragon.sireValue,
-
     edit: false
   };
 
@@ -67,7 +66,6 @@ class AccountDragonRow extends Component {
   render() {
     return (
       <div>
-        <div>{this.props.dragon.nickname}</div>
         <input
           type="text"
           value={this.state.nickname}
@@ -88,7 +86,7 @@ class AccountDragonRow extends Component {
             />
           </span>{" "}
           <span>
-            SireValue:{" "}
+            Sire Value:{" "}
             <input
               type="number"
               disabled={!this.state.edit}
@@ -96,7 +94,7 @@ class AccountDragonRow extends Component {
               onChange={this.updateSireValue}
               className="account-dragon-row-input"
             />
-          </span>
+          </span>{" "}
           <span>
             Public:{" "}
             <input
@@ -108,7 +106,6 @@ class AccountDragonRow extends Component {
           </span>
           {this.state.edit ? this.SaveButton : this.EditButton}
         </div>
-        <div />
       </div>
     );
   }

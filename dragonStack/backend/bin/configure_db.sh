@@ -16,5 +16,4 @@ psql -U node_user dragonstackdb < ./bin/sql/accountDragon.sql
 
 node ./bin/insertTraits.js
 
-
 echo "dragonstackdb configured"

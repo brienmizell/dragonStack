@@ -14,7 +14,7 @@ class Generation {
     const expirationPeriod = Math.floor(Math.random() * (refreshRate / 2));
 
     const msUntilExpiration =
-      Math.random() < 5
+      Math.random() < 0.5
         ? refreshRate - expirationPeriod
         : refreshRate + expirationPeriod;
 
@@ -27,7 +27,7 @@ class Generation {
     }
 
     if (this.accountIds.has(accountId)) {
-      throw new Error("You already have a dragon from this generation!");
+      throw new Error("You already have a dragon from this generation");
     }
 
     this.accountIds.add(accountId);

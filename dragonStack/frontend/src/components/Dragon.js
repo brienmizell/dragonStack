@@ -8,9 +8,9 @@ import fetchStates from "../reducers/fetchStates";
 class Dragon extends Component {
   get DragonView() {
     const { dragon } = this.props;
-    if (dragon.status === fetchStates.error) {
+
+    if (dragon.status === fetchStates.error)
       return <span>{dragon.message}</span>;
-    }
 
     return <DragonAvatar dragon={dragon} />;
   }

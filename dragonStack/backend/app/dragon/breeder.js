@@ -21,15 +21,12 @@ class Breeder {
       });
     });
 
-    return new Dragon({
-      nickname: "Unnamed baby",
-      traits: babyTraits
-    });
+    return new Dragon({ nickname: "Unnamed baby", traits: babyTraits });
   }
 
   // Two incoming traits: matronTrait and patronTrait
   // The matronTrait and patronTrait string values are encoded.
-  // Both traits will have their characters summed.
+  // Both traits have their characters summed.
   // Get a range by adding both character sums.
   // Generate a random number, in that range.
   // If the number is less than the matron's character sum, pick matron.
@@ -53,4 +50,5 @@ class Breeder {
       .reduce((sum, character) => (sum += character.charCodeAt()), 0);
   }
 }
+
 module.exports = Breeder;
