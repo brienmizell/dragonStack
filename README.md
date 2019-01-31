@@ -4,6 +4,7 @@ dragonStack is a full-stack web application with both a backend and a frontend. 
 
 Some of the main application highlights:
 
+* Bullet list
 Built a backend server with Node.js and Express.js.
 Created an API with GET, POST, and PUT requests.
 Built components with React.js.
